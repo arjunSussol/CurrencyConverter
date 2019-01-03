@@ -11,10 +11,15 @@ module.exports = {
         "jsx-a11y",
         "import"
     ],
+    "globals": {
+        "fetch": true,
+        "btoa": true
+    },
     "rules": {
         "import/prefer-default-export": "off",
         "jsx-boolean-value": "off",
         "object-shorthand": "off",
+        "no-return-assign": "off",
         "react/jsx-filename-extension": [
             2,
             {
@@ -34,8 +39,8 @@ module.exports = {
             0
           ],
         "react/prop-types": [
-            "enabled",
-            { "ignore": "ignore", "customValidators": "customValidator" }
+            2,
+            { "ignore": ["customValidators"] }
           ],
           "quote-props": "off",
           "no-console": "off",

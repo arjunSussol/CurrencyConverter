@@ -21,7 +21,6 @@ export default class Login extends Component {
       username: '',
       password: '',
       error: '',
-      status: '',
     };
 
     this.passwordRef = null;
@@ -29,45 +28,29 @@ export default class Login extends Component {
     this.textLengthInvalid = this.textLengthInvalid.bind(this);
   }
 
-  textContainsSpaces(text){
-    const reg = /^\S*$/;
-    return !(reg.test(text));
-  }
-
-  textLengthInvalid(text, lessThen = 8, greaterThen = 32){
-    return text.length < lessThen || text.length > greaterThen;
-  }
-
-  get canAttemptSubmit(){
-    return(
-      this.state.username.length > 0 && this.state.password.length > 0
+  get canAttemptSubmit() {
+    const { username, password } = this.state;
+    return (
+      username.length > 0 && password.length > 0
     );
   }
 
-  handleOnChangeUsername = (text) => {
-    this.setState({ username: text });
-  }
-
-  handleOnChangePassword = (text) => {
-    this.setState({ password: text });
-  }
   /**
-	 * Since RequestAuth(username, password) is a promise, you should be able to obtain
-	 * the data either in a .then block or async await as reference below:
-	 *
-	 * 	// https://stackoverflow.com/questions/45200723/react-native-async-function-returns-promise-but-not-my-json-data
-	 */
+ * Since RequestAuth(username, password) is a promise, you should be able to obtain
+ * the data either in a .then block or async await as reference below:
+ *
+ * // https://stackoverflow.com/questions/45200723/react-native-async-function-returns-promise-but-not-my-json-data
+ */
 
 doAuth = async () => {
   const { username, password } = this.state;
 
-  try{
-
-    if(username.length === 0) throw new Error(validateStrings.username.required);
-    if(this.textContainsSpaces(username)) throw new Error(validateStrings.username.containsSpaces);
-    if(password.length === 0) throw new Error(validateStrings.password.required);
-    if(this.textLengthInvalid(password)) throw new Error(validateStrings.password.lengthInvalid);
-    if(this.textContainsSpaces(password)) throw new Error(validateStrings.password.containsSpaces);
+  try {
+    if (username.length === 0) throw new Error(validateStrings.username.required);
+    if (this.textContainsSpaces(username)) throw new Error(validateStrings.username.containsSpaces);
+    if (password.length === 0) throw new Error(validateStrings.password.required);
+    if (this.textLengthInvalid(password)) throw new Error(validateStrings.password.lengthInvalid);
+    if (this.textContainsSpaces(password)) throw new Error(validateStrings.password.containsSpaces);
 
     const responseData = await RequestAuth(username, password);
     console.log(responseData);
@@ -76,45 +59,60 @@ doAuth = async () => {
       password: responseData.name,
       error: '',
     });
-  } catch(err){
-    this.setState({error: err.message});
-    console.log("Error: "+err.message);
+  } catch (err) {
+    this.setState({ error: err.message });
+    console.log(`Error: ${err.message}`);
   }
 }
 
+textContainsSpaces = (text) => {
+  const reg = /^\S*$/;
+  return !(reg.test(text));
+}
+
+textLengthInvalid = (text, lessThen = 8, greaterThen = 32) => text.length < lessThen || text.length > greaterThen
+
+handleOnChangeUsername = (text) => {
+  this.setState({ username: text });
+}
+
+handleOnChangePassword = (text) => {
+  this.setState({ password: text });
+}
+
 render() {
-  const { username, password } = this.state;
+  const { username, password, error } = this.state;
 
   return (
     <View style={styles.container}>
-      <Text style={{color: 'red'}}>
-        {this.state.error}
+      <Text style={{ color: 'red' }}>
+        {error}
       </Text>
       <View style={styles.inputContainer}>
 
-        <Image style={styles.inputIcon} source={usernameImg}/>
+        <Image style={styles.inputIcon} source={usernameImg} />
         <TextInput
           autoFocus
           selectTextOnFocus
           style={styles.inputs}
           placeholder="Username"
           value={username}
-          underlineColorAndroid={username===''?'red':'transparent'}
+          underlineColorAndroid={username === '' ? 'red' : 'transparent'}
           onChangeText={this.handleOnChangeUsername}
           returnKeyType="next"
           onSubmitEditing={() => { if (this.passwordRef) this.passwordRef.focus(); }}
-          blurOnSubmit={false}          
-        />                  
+          blurOnSubmit={false}
+        />
       </View>
 
       <View style={styles.inputContainer}>
-        <Image style={styles.inputIcon} source={passwordImg}></Image>
+        <Image style={styles.inputIcon} source={passwordImg} />
         <TextInput
           secureTextEntry
           selectTextOnFocus
           style={styles.inputs}
           placeholder="Password"
-          underlineColorAndroid={password===''?'red':'transparent'}
+          underlineColorAndroid={password === '' ? 'red' : 'transparent'}
           value={password}
           onChangeText={this.handleOnChangePassword}
           ref={reference => (this.passwordRef = reference)}
@@ -124,9 +122,9 @@ render() {
           }}
         />
       </View>
-      
-      <TouchableOpacity 
-        style={!this.canAttemptSubmit?styles.disabledContainer:[styles.buttonContainer, styles.loginButton]}
+
+      <TouchableOpacity
+        style={!this.canAttemptSubmit ? styles.disabledContainer : [styles.buttonContainer, styles.loginButton]}
         onPress={this.doAuth}
         disabled={!this.canAttemptSubmit}
       >
@@ -134,14 +132,14 @@ render() {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.buttonContainer}>
-          <Text>Forgot your password?</Text>
+        <Text>Forgot your password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.buttonContainer}>
-          <Text>Register</Text>
+        <Text>Register</Text>
       </TouchableOpacity>
 
     </View>
-    );
-  }
+  );
+}
 }
