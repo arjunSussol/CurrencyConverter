@@ -24,8 +24,6 @@ export default class Login extends Component {
     };
 
     this.passwordRef = null;
-    this.textContainsSpaces = this.textContainsSpaces.bind(this);
-    this.textLengthInvalid = this.textLengthInvalid.bind(this);
   }
 
   get canAttemptSubmit() {
@@ -53,15 +51,17 @@ doAuth = async () => {
     if (this.textContainsSpaces(password)) throw new Error(validateStrings.password.containsSpaces);
 
     const responseData = await RequestAuth(username, password);
-    console.log(responseData);
-    this.setState({
-      username: responseData.store,
-      password: responseData.name,
-      error: '',
-    });
+    if (!responseData.error) {
+      this.setState({
+        username: responseData.store,
+        password: responseData.name,
+        error: '',
+      });
+    } else {
+      throw new Error(responseData.error);
+    }
   } catch (err) {
     this.setState({ error: err.message });
-    console.log(`Error: ${err.message}`);
   }
 }
 
