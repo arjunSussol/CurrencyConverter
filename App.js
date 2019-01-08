@@ -7,6 +7,9 @@ import Home from './src/js/screens/Home';
 EStyleSheet.build({
   $primaryBlue: '#4F6D7A',
   $white: '#FFFFFF',
+  $darkgray: '#a9a9a9',
+  $border: '#979797',
+  $inputText: '#797979',
 });
 
 const App = () => <Home />;

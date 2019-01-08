@@ -17,8 +17,8 @@ const Logo = () => (
         style={styles.logo}
         source={require('./images/logo.png')}
       />
-      <Text style={styles.text}>Currency Converter</Text>
     </ImageBackground>
+    <Text style={styles.text}>Currency Converter</Text>
   </View>
 );
 
