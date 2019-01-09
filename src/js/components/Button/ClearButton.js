@@ -7,12 +7,12 @@ import {
 import styles from './styles';
 
 const ClearButton = ({ text, onPress }) => (
-  <TouchableOpacity style={styles.container} onPress={onPress}>
-    <View style={styles.wrapper}>
+  <View style={styles.container}>
+    <TouchableOpacity style={styles.wrapper} onPress={onPress}>
       <Image resizeMode="contain" style={styles.icon} source={require('./images/icon.png')} />
       <Text style={styles.text}>{text}</Text>
-    </View>
-  </TouchableOpacity>
+    </TouchableOpacity>
+  </View>
 );
 
 ClearButton.propTypes = {

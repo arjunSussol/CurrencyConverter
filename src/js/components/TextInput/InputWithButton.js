@@ -35,4 +35,5 @@ InputWithButton.propTypes = {
   editable: PropTypes.bool,
   onPress: PropTypes.func,
 };
+
 export default InputWithButton;
