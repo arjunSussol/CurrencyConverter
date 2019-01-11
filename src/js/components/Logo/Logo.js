@@ -1,25 +1,115 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import {
-  View, Text, ImageBackground, Image,
+  View, Text, Keyboard, Animated, Platform, StyleSheet,
 } from 'react-native';
 
 import styles from './styles';
 
-const Logo = () => (
-  <View style={styles.container}>
-    <ImageBackground
-      resizeMode="contain"
-      style={styles.containerImage}
-      source={require('./images/background.png')}
-    >
-      <Image
-        resizeMode="contain"
-        style={styles.logo}
-        source={require('./images/logo.png')}
-      />
-    </ImageBackground>
-    <Text style={styles.text}>Currency Converter</Text>
-  </View>
-);
+const ANIMATION_DURATION = 250;
+
+class Logo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      containerImageWidth: new Animated.Value(styles.$largeContainerSize),
+      imageWidth: new Animated.Value(styles.$largeImageSize),
+    };
+  }
+
+  componentDidMount() {
+    const platformName = Platform.OS === 'ios' ? 'Will' : 'Did';
+    this.keyboardDidShowListener = Keyboard.addListener(`keyboard${platformName}Show`, this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener(`keyboard${platformName}Hide`, this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardDidShow = () => {
+    console.log('keyboardDidShow');
+    const { containerImageWidth, imageWidth } = this.state;
+    console.log(JSON.stringify(containerImageWidth));
+    console.log(JSON.stringify(imageWidth));
+
+    Animated.parallel([
+      Animated.timing(containerImageWidth, {
+        toValue: styles.$smallContainerSize,
+        duration: ANIMATION_DURATION,
+      }),
+      Animated.timing(imageWidth, {
+        toValue: styles.$smallImageSize,
+        duration: ANIMATION_DURATION,
+      }),
+    ]).start();
+    console.log(JSON.stringify(containerImageWidth));
+    console.log(JSON.stringify(imageWidth));
+  }
+
+  keyboardDidHide = () => {
+    console.log('keyboardDidHide');
+    const { containerImageWidth, imageWidth } = this.state;
+
+    console.log(JSON.stringify(containerImageWidth));
+    console.log(JSON.stringify(imageWidth));
+
+    Animated.parallel([
+      Animated.timing(containerImageWidth, {
+        toValue: styles.$largeContainerSize,
+        duration: ANIMATION_DURATION,
+      }),
+      Animated.timing(imageWidth, {
+        toValue: styles.$largeImageSize,
+        duration: ANIMATION_DURATION,
+      }),
+    ]).start();
+    console.log(JSON.stringify(containerImageWidth));
+    console.log(JSON.stringify(imageWidth));
+  }
+
+  render() {
+    const { tintColor } = this.props;
+    const { containerImageWidth, imageWidth } = this.state;
+    console.log(JSON.stringify(containerImageWidth));
+    console.log(JSON.stringify(imageWidth));
+
+    const imageStyle = [
+      { width: imageWidth },
+      tintColor ? { tintColor } : null,
+    ];
+
+    const containerStyle = [
+      styles.containerImage,
+      { width: containerImageWidth },
+    ];
+    console.log(containerStyle);
+    console.log(imageStyle);
+
+    return (
+      <View style={styles.container}>
+        <Animated.View style={containerStyle}>
+          <Animated.Image
+            resizeMode="contain"
+            style={[StyleSheet.absoluteFill, containerStyle]}
+            source={require('./images/background.png')}
+          />
+          <Animated.Image
+            resizeMode="contain"
+            style={imageStyle}
+            source={require('./images/logo.png')}
+          />
+        </Animated.View>
+        <Text style={styles.text}>Currency Converter</Text>
+      </View>
+    );
+  }
+}
+
+Logo.propTypes = {
+  tintColor: PropTypes.string,
+};
 
 export default Logo;

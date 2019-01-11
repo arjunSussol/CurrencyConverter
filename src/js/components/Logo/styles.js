@@ -2,7 +2,13 @@ import { Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const imageWidth = Dimensions.get('window').width / 2;
+
 export default EStyleSheet.create({
+  $smallContainerSize: imageWidth / 2,
+  $smallImageSize: imageWidth / 4,
+  $largeImageSize: imageWidth / 2,
+  $largeContainerSize: imageWidth,
+
   container: {
     alignItems: 'center',
   },
