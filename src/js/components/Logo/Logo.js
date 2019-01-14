@@ -30,10 +30,7 @@ class Logo extends Component {
   }
 
   keyboardDidShow = () => {
-    console.log('keyboardDidShow');
     const { containerImageWidth, imageWidth } = this.state;
-    console.log(JSON.stringify(containerImageWidth));
-    console.log(JSON.stringify(imageWidth));
 
     Animated.parallel([
       Animated.timing(containerImageWidth, {
@@ -45,16 +42,10 @@ class Logo extends Component {
         duration: ANIMATION_DURATION,
       }),
     ]).start();
-    console.log(JSON.stringify(containerImageWidth));
-    console.log(JSON.stringify(imageWidth));
   }
 
   keyboardDidHide = () => {
-    console.log('keyboardDidHide');
     const { containerImageWidth, imageWidth } = this.state;
-
-    console.log(JSON.stringify(containerImageWidth));
-    console.log(JSON.stringify(imageWidth));
 
     Animated.parallel([
       Animated.timing(containerImageWidth, {
@@ -66,15 +57,11 @@ class Logo extends Component {
         duration: ANIMATION_DURATION,
       }),
     ]).start();
-    console.log(JSON.stringify(containerImageWidth));
-    console.log(JSON.stringify(imageWidth));
   }
 
   render() {
     const { tintColor } = this.props;
     const { containerImageWidth, imageWidth } = this.state;
-    console.log(JSON.stringify(containerImageWidth));
-    console.log(JSON.stringify(imageWidth));
 
     const imageStyle = [
       { width: imageWidth },
@@ -85,8 +72,6 @@ class Logo extends Component {
       styles.containerImage,
       { width: containerImageWidth },
     ];
-    console.log(containerStyle);
-    console.log(imageStyle);
 
     return (
       <View style={styles.container}>
