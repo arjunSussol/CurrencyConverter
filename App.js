@@ -10,6 +10,7 @@ EStyleSheet.build({
   $darkgray: '#a9a9a9',
   $border: '#979797',
   $inputText: '#797979',
+  $darkText: '#343434',
 });
 
 const App = () => <CurrencyList />;
